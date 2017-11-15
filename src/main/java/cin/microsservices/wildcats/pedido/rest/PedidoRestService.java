@@ -1,5 +1,6 @@
 package cin.microsservices.wildcats.pedido.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import cin.microsservices.wildcats.pedido.domain.pedido.ItemPedido;
 import cin.microsservices.wildcats.pedido.domain.pedido.Pedido;
 import cin.microsservices.wildcats.pedido.domain.pedido.StatusPedido;
 import cin.microsservices.wildcats.pedido.dto.pedido.ItemPedidoDTO;
@@ -63,7 +65,7 @@ public class PedidoRestService {
     @POST
     @Path("item/adiciona")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void adicionaItemPedido(ItemPedidoDTO item) {
+    public void adicionaItemPedido(ItemPedidoDTO item) throws IOException {
 
         contadorErroCaotico++;
 
@@ -76,17 +78,25 @@ public class PedidoRestService {
         long idCliente = 0;
 
         boolean pedidoNovo = true;
+        boolean hasProduto = false;
 
         for (Pedido pedido : pedidosMock) {
 
             if (pedido.getId() == item.getIdPedido()) {
-                pedido.getItems().add(item.getItem());
+                for(ItemPedido obj : pedido.getItems()){
+                    if(obj.getIdProduto() == item.getItem().getIdProduto()){
+                        obj.setQuantidade(obj.getQuantidade() + item.getItem().getQuantidade());
+                        hasProduto = true;
+                    }
+                }
+                if(hasProduto == false){
+                    pedido.getItems().add(item.getItem());
+                }
 
                 idCliente = pedido.getIdCliente();
 
                 pedidoNovo = false;
             }
-
         }
 
         if (pedidoNovo) {

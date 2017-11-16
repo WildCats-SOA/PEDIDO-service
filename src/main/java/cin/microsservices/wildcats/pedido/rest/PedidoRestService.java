@@ -1,6 +1,8 @@
 package cin.microsservices.wildcats.pedido.rest;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +76,15 @@ public class PedidoRestService {
         }
 
         // se for pedido novo, cria, senao somente adiciona o item
+
+
+        URL url = new URL("http://localhost:8081/clienterest/cliente?id="+item.getIdCliente());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        if (con.getResponseCode() == 404) {
+            throw new RuntimeException("Cliente Não Existe!");
+        }
 
         long idCliente = 0;
 

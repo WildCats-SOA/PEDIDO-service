@@ -78,6 +78,7 @@ public class PedidoApplicationTests {
 		pedido_rest.pagaPedido(Long.valueOf(1));
 		List<Pedido> lista_pedidos = new ArrayList<Pedido>();
 		Pedido pedido_teste= new Pedido();
+		lista_pedidos = pedido_rest.buscarPedidos();
 		for (Pedido pedido : lista_pedidos) {
 			if (pedido != null && pedido.getId() == Long.valueOf(1)) {
 				pedido_teste = pedido;

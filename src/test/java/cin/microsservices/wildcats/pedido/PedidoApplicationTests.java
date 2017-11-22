@@ -74,7 +74,7 @@ public class PedidoApplicationTests {
 		List<Pedido> lista_pedidos = new ArrayList<Pedido>();
 		Pedido pedido_teste= new Pedido();
 		for (Pedido pedido : lista_pedidos) {
-			if (pedido.getId() == 1) {
+			if (pedido != null && pedido.getId() == 1) {
 				pedido_teste = pedido;
 				break;
 			}
@@ -87,9 +87,19 @@ public class PedidoApplicationTests {
 	public void testRemovePedido() {
 		pedido_rest.removeItemPedido(item1DTO);
 		List<Pedido> lista_pedidos;
-		lista_pedidos = pedido_rest.buscarPedidosPorCliente(Long.valueOf(1));
+		lista_pedidos = pedido_rest.buscarPedidos();
+		Boolean encontrou = false;
+		for (Pedido pedido : lista_pedidos) {
+			List<ItemPedido> lista_item_pedidos = pedido.getItems();
+			for (ItemPedido itemPedido : lista_item_pedidos) {
+				if(itemPedido != null && itemPedido.getIdProduto() == 1) {
+					encontrou = true;
+					break;
+				}
+			}
+		}
 		//=================VERIFICAÇÃO===============
-		assertFalse(lista_pedidos.size() > 0);
+		assertFalse(encontrou);
 	}
 
 }

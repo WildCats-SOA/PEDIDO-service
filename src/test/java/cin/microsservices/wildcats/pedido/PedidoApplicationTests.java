@@ -9,6 +9,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.hamcrest.core.Is;
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.core.IsEqual;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -74,13 +79,13 @@ public class PedidoApplicationTests {
 		List<Pedido> lista_pedidos = new ArrayList<Pedido>();
 		Pedido pedido_teste= new Pedido();
 		for (Pedido pedido : lista_pedidos) {
-			if (pedido != null && pedido.getId() == 1) {
+			if (pedido != null && pedido.getId() == Long.valueOf(1)) {
 				pedido_teste = pedido;
 				break;
 			}
 		}
 		//=================VERIFICAÇÃO===============
-		
+		//assertThat(pedido_teste.getIdCliente(), is(Long.valueOf(1)));
 		assertNull(pedido_teste.getStatus());
 	}
 	
@@ -92,9 +97,9 @@ public class PedidoApplicationTests {
 		Boolean encontrou = false;
 		for (Pedido pedido : lista_pedidos) {
 			List<ItemPedido> lista_item_pedidos = pedido.getItems();
-			if(pedido != null && pedido.getId() == 1 && pedido.getIdCliente()==1) {
+			if(pedido != null && pedido.getId() == Long.valueOf(1) && pedido.getIdCliente()==Long.valueOf(1)) {
 				for (ItemPedido itemPedido : lista_item_pedidos) {
-					if(itemPedido != null && itemPedido.getIdProduto() == 1) {
+					if(itemPedido != null && itemPedido.getIdProduto() == Long.valueOf(1)) {
 						encontrou = true;
 						break;
 					}

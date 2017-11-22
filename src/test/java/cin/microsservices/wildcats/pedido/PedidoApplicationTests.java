@@ -80,10 +80,8 @@ public class PedidoApplicationTests {
 			}
 		}
 		//=================VERIFICAÇÃO===============
-		if(pedido_teste != null) {
-			assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
-		}
-		else {fail();}
+		
+		assertNull(pedido_teste.getStatus());
 	}
 	
 	@Test

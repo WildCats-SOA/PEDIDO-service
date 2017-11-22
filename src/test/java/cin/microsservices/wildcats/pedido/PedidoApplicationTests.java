@@ -4,6 +4,8 @@ import cin.microsservices.wildcats.pedido.domain.pedido.Pedido;
 import cin.microsservices.wildcats.pedido.domain.pedido.StatusPedido;
 import cin.microsservices.wildcats.pedido.dto.pedido.ItemPedidoDTO;
 import cin.microsservices.wildcats.pedido.rest.PedidoRestService;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import cin.microsservices.wildcats.pedido.domain.pedido.ItemPedido;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.is;
@@ -34,6 +37,19 @@ public class PedidoApplicationTests {
 		item1DTO.setIdPedido(1);
 		item1DTO.setIdCliente(1);
 		item1DTO.setItem(item1);
+		try {
+			pedido_rest.adicionaItemPedido(item1DTO);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			fail();
+		}
+	}
+	@After
+	public void limpa_teste() {
+		item1DTO = new ItemPedidoDTO();
+		item1 = new ItemPedido();
+		pedido_rest = new PedidoRestService();
+
 	}
 	/**
 	 * Teste simples na criação de um ItemPedido
@@ -41,18 +57,32 @@ public class PedidoApplicationTests {
 	 */
 	@Test
 	public void testCriacaoDePedido() {
-		try {
-			pedido_rest.adicionaItemPedido(item1DTO);
-			List<Pedido> lista_pedidos;
-			lista_pedidos = pedido_rest.buscarPedidosPorCliente(Long.valueOf(1));
-			//=================VERIFICAÇÃO===============
-			assertTrue(lista_pedidos.size() > 0);
-		} catch (IOException e) {
-			//Se vier para o catch, quer dizer que a verificação interna
-			//do pedido falhou
-			fail();
-		}
+		List<Pedido> lista_pedidos;
+		lista_pedidos = pedido_rest.buscarPedidosPorCliente(Long.valueOf(1));
+		//=================VERIFICAÇÃO===============
+		assertTrue(lista_pedidos.size() > 0);
+
 	}
+	/**
+	 * Testa se esta sendo efetuado o pagamento de pedidos
+	 * esperado que retorne como 'CONCLUIDO'
+	 * 21/11/2017
+	 */
+	@Test
+	public void testPagaPedido() {
+		pedido_rest.pagaPedido(Long.valueOf(1));
+		List<Pedido> lista_pedidos = new ArrayList<Pedido>();
+		Pedido pedido_teste= new Pedido();
+		for (Pedido pedido : lista_pedidos) {
+			if (pedido.getId() == 1) {
+				pedido_teste = pedido;
+				break;
+			}
+		}
+		//=================VERIFICAÇÃO===============
+		assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
+	}
+	
 	@Test
 	public void testRemovePedido() {
 		pedido_rest.removeItemPedido(item1DTO);

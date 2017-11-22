@@ -80,7 +80,10 @@ public class PedidoApplicationTests {
 			}
 		}
 		//=================VERIFICAÇÃO===============
-		assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
+		if(pedido_teste != null) {
+			assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
+		}
+		else {fail();}
 	}
 	
 	@Test
@@ -91,10 +94,12 @@ public class PedidoApplicationTests {
 		Boolean encontrou = false;
 		for (Pedido pedido : lista_pedidos) {
 			List<ItemPedido> lista_item_pedidos = pedido.getItems();
-			for (ItemPedido itemPedido : lista_item_pedidos) {
-				if(itemPedido != null && itemPedido.getIdProduto() == 1) {
-					encontrou = true;
-					break;
+			if(pedido != null && pedido.getId() == 1 && pedido.getIdCliente()==1) {
+				for (ItemPedido itemPedido : lista_item_pedidos) {
+					if(itemPedido != null && itemPedido.getIdProduto() == 1) {
+						encontrou = true;
+						break;
+					}
 				}
 			}
 		}

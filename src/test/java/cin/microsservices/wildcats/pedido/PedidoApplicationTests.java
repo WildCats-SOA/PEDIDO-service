@@ -85,8 +85,8 @@ public class PedidoApplicationTests {
 			}
 		}
 		//=================VERIFICAÇÃO===============
-		//assertThat(pedido_teste.getIdCliente(), is(Long.valueOf(1)));
-		assertNull(pedido_teste.getStatus());
+		assertTrue(pedido_teste.getId() == Long.valueOf(1));
+		assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
 	}
 	
 	@Test

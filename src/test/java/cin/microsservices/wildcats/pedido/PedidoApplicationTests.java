@@ -76,6 +76,7 @@ public class PedidoApplicationTests {
 	@Test
 	public void testPagaPedido() {
 		pedido_rest.pagaPedido(Long.valueOf(1));
+		StatusPedido stspedido = null;
 		List<Pedido> lista_pedidos = new ArrayList<Pedido>();
 		Pedido pedido_teste= new Pedido();
 		lista_pedidos = pedido_rest.buscarPedidos();
@@ -87,7 +88,7 @@ public class PedidoApplicationTests {
 		}
 		//=================VERIFICAÇÃO===============
 		assertTrue(pedido_teste.getId() == Long.valueOf(1));
-		assertTrue(pedido_teste.getStatus().equals("CONCLUIDO"));
+		assertTrue(pedido_teste.getStatus().equals(stspedido.CONCLUIDO));
 	}
 	
 	@Test

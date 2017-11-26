@@ -78,7 +78,7 @@ public class PedidoRestService {
         // se for pedido novo, cria, senao somente adiciona o item
 
 
-        URL url = new URL("http://localhost:8081/clienterest/cliente?id="+item.getIdCliente());
+        URL url = new URL("http://cliente:8081/clienterest/cliente?id="+item.getIdCliente());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 

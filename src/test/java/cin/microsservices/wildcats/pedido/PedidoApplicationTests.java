@@ -62,10 +62,16 @@ public class PedidoApplicationTests {
 	 */
 	@Test
 	public void testCriacaoDePedido() {
-		List<Pedido> lista_pedidos;
-		lista_pedidos = pedido_rest.buscarPedidosPorCliente(Long.valueOf(1));
-		//=================VERIFICAÇÃO===============
-		assertTrue(lista_pedidos.size() > 0);
+		try {
+			List<Pedido> lista_pedidos;
+			lista_pedidos = pedido_rest.buscarPedidosPorCliente(Long.valueOf(1));
+			//=================VERIFICAÇÃO===============
+			assertTrue(lista_pedidos.size() > 0);
+	        } catch (IOException e) {
+ 			//Se vier para o catch, quer dizer que a verificação interna
+ 			//do pedido falhou
+ 			fail();
+ 		}
 
 	}
 	/**

@@ -48,8 +48,10 @@ public class PedidoRestService {
     @GET
     @Path("pedido/{idCliente}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Pedido> buscarPedidosPorCliente(@PathParam("idCliente") long idCliente) {
+    public List<Pedido> buscarPedidosPorCliente(@PathParam("idCliente") long idCliente) throws IOException {
 
+        checkCliente(idCliente);
+        
         List<Pedido> pedidos = new ArrayList<Pedido>();
 
         for (Pedido pedido : pedidosMock) {
@@ -78,13 +80,7 @@ public class PedidoRestService {
         // se for pedido novo, cria, senao somente adiciona o item
 
 
-        URL url = new URL("http://cliente:8081/clienterest/cliente?id="+item.getIdCliente());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        if (con.getResponseCode() == 404) {
-            throw new RuntimeException("Cliente Não Existe!");
-        }
+        checkCliente(item.getIdCliente());
 
         long idCliente = 0;
 
@@ -189,5 +185,15 @@ public class PedidoRestService {
 
     }
 
+    private void checkCliente(long idCliente) throws IOException {
+        URL url = new URL("http://cliente:8081/clienterest/cliente?id="+idCliente);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        if (con.getResponseCode() == 404) {
+            throw new RuntimeException("Cliente Não Existe!");
+        }
+    }
+    
 }
 
